@@ -28,6 +28,11 @@ HttpService.prototype = {
   configure: function () {
     this.app.use(bodyParser.urlencoded());
     this.app.use(bodyParser.json());
+    this.app.set('json spaces', 4);
+    this.app.use(function (req, res, next) {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      return next();
+    });
   },
 
   start: function () {
@@ -51,18 +56,18 @@ HttpService.prototype = {
     this.app.get('/', this.controller.index.bind(this.controller));
     this.app.get('/state', this.controller.getApplicationState.bind(this.controller));
 
-    this.app.post('/play', this.controller.start.bind(this.controller));
+    this.app.post('/play', this.controller.play.bind(this.controller));
+    this.app.post('/play/next', this.controller.playNext.bind(this.controller));
+    this.app.post('/play/prev', this.controller.playPrevious.bind(this.controller));
+
     this.app.post('/stop', this.controller.stop.bind(this.controller));
     this.app.post('/pause', this.controller.pause.bind(this.controller));
     this.app.post('/resume', this.controller.resume.bind(this.controller));
 
-    this.app.post('/queue', this.controller.queue.bind(this.controller));
-    this.app.post('/clear_queue', this.controller.clearQueue.bind(this.controller));
+    this.app.post('/playlist/add', this.controller.addToPlaylist.bind(this.controller));
+    this.app.post('/playlist/clear', this.controller.clearPlaylist.bind(this.controller));
 
-    this.app.post('/play_next', this.controller.playNext.bind(this.controller));
-    this.app.post('/play_prev', this.controller.playPrevious.bind(this.controller));
-
-    this.app.post('/volume_up', this.controller.volumeUp.bind(this.controller));
-    this.app.post('/volume_down', this.controller.volumeDown.bind(this.controller));
+    this.app.post('/volume/up', this.controller.volumeUp.bind(this.controller));
+    this.app.post('/volume/down', this.controller.volumeDown.bind(this.controller));
   }
 };

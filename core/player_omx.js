@@ -4,34 +4,45 @@ var eventEmitter = new events.EventEmitter();
 var winston = require('winston');
 var BasePlayer = new require('./player.js').BasePlayer;
 
-function PlayerOmxDirector(options) {
-	winston.info("BasePlayer is initializing");
-	options = options || {};
-
-	this.queue = options.queue || [];
-	this.queueCurrentIdx = options.queueCurrentIdx || 0;
-	this.state = options.state || this.allStates.Waiting;
-	this.currentMedia = '';
-	this.watcherID = -1;
-
-	this.bindEvents();
-}
+var PlayerOmxDirector = BasePlayer;
 
 PlayerOmxDirector.prototype = {
 
 	__proto__: BasePlayer.prototype,
 
-	constructor: PlayerOmxDirector,
+	constructor: BasePlayer,
 
-	name: "OmxDirectorPlayer",
+	init: function (options) {
 
-	allCommands: {
-		'play': omx.play,
-		'stop': omx.stop,
-		'pause': omx.pause,
-		'resume': omx.resume,
-		'volup': omx.volup,
-		'voldown': omx.voldown
+		this.playerName = "OmxDirectorPlayer";
+
+		this.allCommands = {
+			'play': omx.play.bind(this),
+			'stop': omx.stop.bind(this),
+			'pause': omx.pause.bind(this),
+			'resume': omx.play.bind(this),
+			'volup': omx.volup.bind(this),
+			'voldown': omx.voldown.bind(this)
+		};
+
+		this.allStates = {
+			'Waiting': 'Waiting',
+			'Playing': 'Playing',
+			'Paused': 'Paused',
+			'Stopped': 'Stopped'
+		};
+
+		this.allEvents = {
+			'onPlayerStopped': 'onPlayerStopped',
+			'onPlayerLoadedMedia': 'onPlayerLoadedMedia',
+			'onPlayerStartedPlaying': 'onPlayerStartedPlaying',
+			'onPlayerPaused': 'onPlayerPaused'
+		};
+		this.watcherID = -1;
+		this.currentMedia = '';
+		this.playlist = options.playlist || [];
+		this.playlistCurrentIdx = options.queueCurrentIdx || 0;
+		this.state = options.state || this.allStates.Waiting;
 	},
 
 	bindEvents: function () {
@@ -51,18 +62,15 @@ PlayerOmxDirector.prototype = {
 
 	getState: function () {
 		var state = {
-			"player_impl": 'OmxDirectorPlayer',
+			"player_impl": 'DummyPlayer',
 			"player_state": this.state,
-			"currently_playing_media": this.getCurrentMedia(),
-			"queue_length": this.queue.length,
-			"queue_item_position": function () {
-				if (this.queue.length === 0) return 0;
-				else return this.queueCurrentIdx + 1;
-			},
-			"queue_content": this.queue,
-			"state_omx": this._getThirdPartyPlayerState()
+			"omx_state": this._getThirdPartyPlayerState(),
+			"queue_current_item": this.getCurrentMedia(),
+			"queue_length": this.playlist.length,
+			"queue_item_position": this.playlist.length === 0 ? 0 : this.playlistCurrentIdx + 1,
+			"queue_content": this.playlist
 		};
-		winston.info("%s is returning it's current state: <%s>", this.name, state);
+		winston.info('Player state is: ', this.state);
 		return state;
 	},
 

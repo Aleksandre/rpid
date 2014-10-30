@@ -28,84 +28,131 @@ AppController.prototype = {
 
   getPlayerState: function (req, res)  {
     var state = this.player.getState();
-    res.send(state);
+    res.status(200).send(this.player.getState());
   },
 
   start: function (req, res)  {
     this.player.play();
-    res.sendStatus(200);
+    res.status(200).send(this.player.getState());
   },
 
   stop: function (req, res)  {
     // TODO : CHANGE stop function
     this.player.pause();
-    res.sendStatus(200);
+    res.status(200).send(this.player.getState());
   },
 
   pause: function (req, res)  {
     this.player.pause();
-    res.sendStatus(200);
+    res.status(200).send(this.player.getState());
   },
 
   resume: function (req, res)  {
     this.player.resume();
-    res.sendStatus(200);
+    res.status(200).send(this.player.getState());
   },
 
   play: function (req, res) {
     if ('itemURL' in req.body) {
       var items = req.body['itemURL'];
       if (items instanceof Array || typeof items === "string") {
-        this.player.play(items);
-        res.sendStatus(200);
+        console.log('AppController is playing <%d> media files', items.length);
+        this._sendPlayCmd(items, res);
       } else {
-        res.status(400).send('The item paramter argument must be a string or an Array of media URL');
+        res.status(400).send('The item parameter argument must be a string or an Array of media URL');
       }
     } else  {
-      var result = this.start();
-      return res.status(200).send(player.getState());
+      this._sendPlayCmd(null, res);
     }
   },
 
-  queue: function (req, res) {
+  _sendPlayCmd: function (item, res) {
+    var result = this.player.play(item);
+    if (result instanceof Error) {
+      var response = {
+        'result': 'The server failed to handle the request',
+        error_message: result.message,
+        server_state: this.player.getState(),
+        stack: result.stack
+      };
+      res.status(400).send(response);
+    } else {
+      res.status(200).send(this.player.getState());
+    }
+  },
+
+  addToPlaylist: function (req, res) {
     if ('itemURL' in req.body) {
+      winston.info('AppController is handling addToPlaylist request: <%s>', req.body.itemURL);
       var items = req.body['itemURL'];
       if (items instanceof Array) {
-        this.player.queueItemCollection(items);
-        res.sendStatus(200);
+        this.player.addItemsToPlaylist(items);
+        res.status(200).send(this.player.getState());
       } else if (typeof items === "string") {
-        this.player.queueOneItem(items);
-        res.sendStatus(200);
+        this.player.addItemToPlaylist(items);
+        res.status(200).send(this.player.getState());
       } else {
-        res.status(400).send('The item paramter argument must be a string or an Array of media URL');
+        res.status(400).send('The item parameter argument must be a string or an Array of media URL');
       }
     } else  {
       res.status(400).send('The itemURL parameter was not specified');
     }
   },
 
-  clearQueue: function (req, res)  {
-    this.player.clearQueue();
-    res.sendStatus(200);
+  clearPlaylist: function (req, res)  {
+    var result = this.player.clearPlaylist();
+    if (result instanceof Error) {
+      this._respondWithError(res, result);
+    } else {
+      res.status(200).send(this.player.getState());
+    }
   },
 
   playNext: function (req, res)  {
-    this.player.playNext();
-    res.sendStatus(200);
+    var result = this.player.playNext();
+    if (result instanceof Error) {
+      this._respondWithError(res, result);
+    } else {
+      res.status(200).send(this.player.getState());
+    }
   },
 
   playPrevious: function (req, res)  {
-    this.player.playPrevious();
-    res.sendStatus(200);
+    var result = this.player.playPrevious();
+    if (result instanceof Error) {
+      this._respondWithError(res, result);
+    } else {
+      res.status(200).send(this.player.getState());
+    }
   },
 
   volumeUp: function (req, res)  {
-    this.player.volumeUp();
-    res.sendStatus(200);
+    var result = this.player.volumeUp();
+    if (result instanceof Error) {
+      this._respondWithError(res, result);
+    } else {
+      res.status(200).send(this.player.getState());
+    }
   },
 
   volumeDown: function (req, res)  {
-    this.player.volumeDown();
-    res.sendStatus(200);
+    var result = this.player.volumeDown();
+    if (result instanceof Error) {
+      this._respondWithError(res, result);
+    } else {
+      res.status(200).send(this.player.getState());
+    }
+  },
+
+  _respondWithError: function (res, error) {
+    var message = error.message || '';
+    var stack = error.stack || '';
+    var response = {
+      'result': 'The server failed to handle the request',
+      error_message: message ,
+      server_state: this.player.getState(),
+      stack: stack
+    };
+    res.status(400).send(response);
   }
 };

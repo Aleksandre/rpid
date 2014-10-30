@@ -16,8 +16,8 @@ var config = {
 	},
 
 	players: {
-		development: './player_omx.js',
-		production: './player_omx.js'
+		development: 'base',
+		production: 'omxdirector'
 	}
 };
 

@@ -1,4 +1,5 @@
 var fs = require('fs');
+var path = require('path');
 var winston = require('winston');
 var config = require('./config.js');
 var EventEmitter = require('events').EventEmitter;
@@ -41,8 +42,8 @@ BasePlayer.prototype = {
 		};
 		this.watcherID = -1;
 		this.currentMedia = '';
-		this.queue = options.queue || [];
-		this.queueCurrentIdx = options.queueCurrentIdx || 0;
+		this.playlist = options.playlist || [];
+		this.playlistCurrentIdx = options.queueCurrentIdx || 0;
 		this.state = options.state || this.allStates.Waiting;
 	},
 
@@ -59,9 +60,9 @@ BasePlayer.prototype = {
 			"player_impl": 'DummyPlayer',
 			"player_state": this.state,
 			"queue_current_item": this.getCurrentMedia(),
-			"queue_length": this.queue.length,
-			"queue_item_position": this.queue.length === 0 ? 0 : this.queueCurrentIdx + 1,
-			"queue_content": this.queue
+			"queue_length": this.playlist.length,
+			"queue_item_position": this.playlist.length === 0 ? 0 : this.playlistCurrentIdx + 1,
+			"queue_content": this.playlist
 		};
 		winston.info('Player state is: ', this.state);
 		return state;
@@ -72,106 +73,123 @@ BasePlayer.prototype = {
 	},
 
 	play: function (mediaURL) {
-		if (typeof mediaURL === "string") {
-			winston.info('Player is creating a new queue and playing the file: <%s>', mediaURL);
+		if (mediaURL instanceof Array) {
+			// Play a list of items
+			winston.info('Player is creating a new playlist with files: <%s>', mediaURL);
 			this.stop();
-			this.clearQueue();
-			this.queueOneItem(mediaURL);
-			return this._sendPlayCmd(mediaURL);
-		} else if (mediaURL instanceof Array) {
-			winston.info('Player is creating a new queue and playing the files: <%s>', mediaURL);
+			this.clearPlaylist();
+			this.addItemsToPlaylist(mediaURL);
+			return this._sendPlayCmd(this.playlist[this.playlistCurrentIdx]);
+		} else if (typeof mediaURL === "string") {
+			// Play one item
+			winston.info('Player is creating a new playlist and playing the file: <%s>', mediaURL);
 			this.stop();
-			this.clearQueue();
-			this.queueOneItem(mediaURL);
-			return this._sendPlayCmd(mediaURL);
-		} else if (this.queue[this.queueCurrentIdx] !== undefined) {
-			winston.info('Player is starting to play the current track in the queue: <%s>', this.queue[this.queueCurrentIdx]);
-			return this._sendPlayCmd(this.queue[this.queueCurrentIdx]);
+			this.clearPlaylist();
+			this.addItemToPlaylist(mediaURL);
+			return this._sendPlayCmd(this.playlist[this.playlistCurrentIdx]);
+		} else if (!mediaURL && this.state === this.allStates.Playing) {
+			winston.info('Player is pausing because it received a play request while already playing')
+			return this.pause();
+		} else if (this.playlist[this.playlistCurrentIdx] !== undefined) {
+			// Play the current item in the playlist
+			winston.info('Player is starting to play the current track in the playlist: <%s>', this.playlist[this.playlistCurrentIdx]);
+			return this._sendPlayCmd(this.playlist[this.playlistCurrentIdx]);
 		} else {
-			winston.info("Player rejected play request because no track was specified and the queue is empty");
-			return new Error("Player: FileNotFound")
+			// Nothing todo. Explain to user.s
+			var msg = "Player rejected play request because no valid track was specified and the playlist is empty";
+			winston.info(msg);
+			return new Error(msg);
 		}
 	},
 
 	start: function ()  {
 		winston.info('Player has started');
-		this._watchThirdPartyPlayer('play');
+		return this._watchThirdPartyPlayer('play');
 	},
 
 	stop: function ()  {
 		winston.info('Player has sent a stop request to 3rd party player');
-		this._sendCmdToThirdPartyPlayer('stop');
-
-		winston.info('Player stopped watching 3rd party player');
-		this._stopWatchingThirdPartyPlayer();
+		return this._sendCmdToThirdPartyPlayer('stop');
 	},
 
 	pause: function ()  {
-		winston.info('Player has sent a pause request to 3rd party player');
-		this._sendCmdToThirdPartyPlayer('pause');
+		if (this.state === this.allStates.Paused) {
+			this.resume();
+		} else if (this.state === this.allStates.Playing) {
+			winston.info('Player has sent a pause request to 3rd party player');
+			return this._sendCmdToThirdPartyPlayer('pause');
+		}
 	},
 
 	resume: function ()  {
-		winston.info('Player has sent a resume request to 3rd party player');
-		this._sendCmdToThirdPartyPlayer('play');
+		if (this.state !== this.allStates.Playing) {
+			winston.info('Player has sent a resume request to 3rd party player');
+			return this._sendCmdToThirdPartyPlayer('play');
+		} else {
+			winston.info('Player did not send resume request because it is already playing');
+		}
 	},
 
-	queueOneItem: function (jsonQueueItem)  {
-		if (jsonQueueItem) {
+	addItemToPlaylist: function (item)  {
+		if (item) {
 			winston.info("Player added a new item to the queue");
-			this.queue.push(unescape(jsonQueueItem));
+			this.playlist.push(unescape(item));
 		} else {
 			winston.info("Player did not queue the new item because it is empty");
 		}
 	},
 
-	queueItemCollection: function (jsonQueueItems)  {
-		if (jsonQueueItems instanceof Array) {
-			jsonQueueItems.forEach((function (item) {
-				this.queueOneItem(item);
+	addItemsToPlaylist: function (items)  {
+		if (items instanceof Array) {
+			items.forEach((function (item) {
+				this.addItemToPlaylist(item);
 			}).bind(this));
 		} else {
 			winston.info("Player did not queue the new item because it is not an Array");
 		}
 	},
 
-	clearQueue: function ()  {
+	clearPlaylist: function ()  {
 		winston.info("Player has cleared it's play queue");
-		this.queue = [];
-		this.queueCurrentIdx = 0;
+		this.playlist = [];
+		this.playlistCurrentIdx = 0;
 	},
 
 	playNext: function ()  {
-		if (this.queueCurrentIdx < this.queue.length) {
-			winston.info('Player Queue length is <%d>', this.queue.length);
-			this.queueCurrentIdx = this.queueCurrentIdx + 1;
-			var media = this.queue[this.queueCurrentIdx];
-			winston.info("Player is playing item <%s> at position <%d> from the queue", media, this.queueCurrentIdx);
-			this._sendPlayCmd(media);
+		if (this.playlistCurrentIdx < this.playlist.length) {
+			winston.info('Player playlist has <%d> item(s)', this.playlist.length);
+			this.playlistCurrentIdx = this.playlistCurrentIdx + 1;
+			var media = this.playlist[this.playlistCurrentIdx];
+			winston.info("Player is playing item <%s> at position <%d> from the playlist", media, this.playlistCurrentIdx);
+			return this._sendPlayCmd(media);
 		} else {
-			winston.info("Player received a playNext request bust has no next track to play");
+			var msg = "Player received a playNext request but has no next track to play"
+			winston.info(msg);
+			return new Error(msg);
 		}
 	},
 
 	playPrevious: function ()  {
-		if (this.queueCurrentIdx > 0) {
-			this.queueCurrentIdx = this.queueCurrentIdx - 1;
-			var media = this.queue[this.queueCurrentIdx];
-			winston.info("Player is playing item <%s> at position <%d> from the queue", media, this.queueCurrentIdx);
+		if (this.playlistCurrentIdx > 0) {
+			this.playlistCurrentIdx = this.playlistCurrentIdx - 1;
+			var media = this.playlist[this.playlistCurrentIdx];
+			winston.info("Player is playing item <%s> at position <%d> from the queue", media, this.playlistCurrentIdx);
 			this._sendPlayCmd(media)
 		} else {
-			winston.info("Player has no previous track to play", this.playerName);
+			var msg = "Player received a playPrevious request but has no previous track to play"
+			winston.info(msg);
+			return new Error(msg)
 		}
 	},
 
 	volumeUp: function ()  {
 		winston.info('Player has sent 3rd party player a request to increase the volume');
-		this._sendCmdToThirdPartyPlayer('volup');
+		return this._sendCmdToThirdPartyPlayer('volup');
 	},
 
 	volumeDown: function ()  {
 		winston.info('Player has sent 3rd party player a request to decrease the volume');
-		this._sendCmdToThirdPartyPlayer('voldown');
+		return this._sendCmdToThirdPartyPlayer('voldown');
 	},
 
 	onLoaded: function (files, options) {
@@ -225,7 +243,7 @@ BasePlayer.prototype = {
 	_sendPlayCmd: function (mediaURL) {
 		if (mediaURL) {
 			if (!(fs.existsSync(mediaURL))) {
-				return new Error('Player: FileNotFound');
+				return new Error('Player: FileNotFound ' + mediaURL);
 			}
 			winston.info('Player has sent a play request for file <%s> to 3rd party player', mediaURL);
 			this.currentMedia = mediaURL;
@@ -246,7 +264,15 @@ BasePlayer.prototype = {
 			winston.error('Player has no command for cmd <%s> ', cmd);
 			return new Error('Player: CommandNoFound');
 		}
-	}
+	},
+
+	_dispose: function ()  {
+		winston.info('Player has sent a stop request to 3rd party player');
+		this._sendCmdToThirdPartyPlayer('stop');
+
+		winston.info('Player stopped watching 3rd party player');
+		this._stopWatchingThirdPartyPlayer();
+	},
 }
 
 /**
@@ -266,8 +292,8 @@ function getPlayer(env) {
 	switch (player) {
 	case 'base':
 		return BasePlayer;
-	case 'omxdirector ':
-		return require('. / player_omx.js ');
+	case 'omxdirector':
+		return require('./player_omx.js');
 	default:
 		throw new Error("getPlayer: The section player in config.js is pointing to an unknown player type: ", player)
 	}

@@ -1,239 +1,329 @@
-{
-    "version": 1,
-    "collections": [{
-        "id": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-        "name": "rpid",
-        "timestamp": 1414340432404,
-        "order": ["3bcf2ad5-5e62-fd13-4383-30337b2640d6", "c6e7b51b-53b0-b82f-ea24-e6fe3986362e", "ff7f1112-bd0f-d071-8687-a44586a78414", "bbbb068f-5987-5efb-b311-aaec6959c961", "8f762219-0279-885b-e82b-0b4f72abe2f2", "3baa00b1-6ab4-5a65-6105-3f19f286205d", "51dc1162-daf5-eead-a799-328536207036", "5e73c423-2098-b848-d45e-bcff90d52867", "08695a0d-bc45-9240-5ebe-c0c5c80f2c6e", "52203646-116c-9d0e-6929-6353c4c54d56", "8d8ddcb6-426d-a3d7-c7fc-d82ac5acd671", "ceeea5f8-e4aa-f8b0-4a71-d1286ce91d9a", "b9bcb263-404c-a289-a6d6-be67e48b5ac1", "0bb880f9-f09d-da72-a648-3630068da589", "41a05cc9-f975-1233-4fe1-b05432191ba3"],
-        "requests": [{
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "08695a0d-bc45-9240-5ebe-c0c5c80f2c6e",
-            "name": "resume",
-            "description": "",
-            "url": "{{server}}/resume",
-            "method": "POST",
-            "headers": "",
-            "data": [],
-            "dataMode": "params",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414349783719
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "0bb880f9-f09d-da72-a648-3630068da589",
-            "name": "volUp",
-            "description": "",
-            "url": "{{server}}/volume_up",
-            "method": "POST",
-            "headers": "",
-            "data": [],
-            "dataMode": "params",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414349805654
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "3baa00b1-6ab4-5a65-6105-3f19f286205d",
-            "name": "queueMany",
-            "description": "",
-            "url": "{{server}}/queue",
-            "method": "POST",
-            "headers": "Content-Type: application/json\n",
-            "data": "{\n  \"itemURL\":[\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\",\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\",\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\"\n    ]\n}",
-            "dataMode": "raw",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414548941514
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "3bcf2ad5-5e62-fd13-4383-30337b2640d6",
-            "name": "state",
-            "description": "",
-            "url": "{{server}}/state",
-            "method": "GET",
-            "headers": "",
-            "data": "{\n  \"itemURL\":[\n    \"%2Fmedia%2Fdat%2Fvid%2FEnders%5C%20Game%2F%5C%5B%5C%20www.UsaBit.com%5C%20%5C%5D%5C%20-%5C%20Ender%E2%80%99s%5C%20Game%5C%20%5C(2013%5C)%5C%20720p%5C%20HDRip%5C%20750MB%5C%20Ganool.mkv\",\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\",\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\"\n    ]\n}",
-            "dataMode": "raw",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414352771436
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "41a05cc9-f975-1233-4fe1-b05432191ba3",
-            "name": "index",
-            "description": "",
-            "url": "{{server}}/",
-            "method": "GET",
-            "headers": "",
-            "data": [],
-            "dataMode": "params",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414548033393
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "51dc1162-daf5-eead-a799-328536207036",
-            "name": "clearQueue",
-            "description": "",
-            "url": "{{server}}/clear_queue",
-            "method": "POST",
-            "headers": "",
-            "data": [],
-            "dataMode": "params",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414349794032
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "52203646-116c-9d0e-6929-6353c4c54d56",
-            "name": "stop",
-            "description": "",
-            "url": "{{server}}/stop",
-            "method": "POST",
-            "headers": "",
-            "data": [],
-            "dataMode": "params",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414349774245
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "5e73c423-2098-b848-d45e-bcff90d52867",
-            "name": "pause",
-            "description": "",
-            "url": "{{server}}/pause",
-            "method": "POST",
-            "headers": "",
-            "data": [],
-            "dataMode": "params",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414349780319
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "8d8ddcb6-426d-a3d7-c7fc-d82ac5acd671",
-            "name": "playNext",
-            "description": "",
-            "url": "{{server}}/play_next",
-            "method": "POST",
-            "headers": "",
-            "data": [],
-            "dataMode": "params",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414349797908
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "8f762219-0279-885b-e82b-0b4f72abe2f2",
-            "name": "queueOne",
-            "description": "",
-            "url": "{{server}}/queue",
-            "method": "POST",
-            "headers": "Content-Type: application/json\n",
-            "data": "{\n  \"itemURL\":\"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\"\n}",
-            "dataMode": "raw",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414349788268
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "b9bcb263-404c-a289-a6d6-be67e48b5ac1",
-            "name": "volDown",
-            "description": "",
-            "url": "{{server}}/volume_down",
-            "method": "POST",
-            "headers": "",
-            "data": [],
-            "dataMode": "params",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414349809746
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "bbbb068f-5987-5efb-b311-aaec6959c961",
-            "name": "play",
-            "description": "",
-            "url": "{{server}}/play",
-            "method": "POST",
-            "headers": "",
-            "data": "",
-            "dataMode": "raw",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414549291528
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "c6e7b51b-53b0-b82f-ea24-e6fe3986362e",
-            "name": "playOne",
-            "description": "Start playing the specified media. The current play queue will be lost.",
-            "url": "{{server}}/play",
-            "method": "POST",
-            "headers": "",
-            "data": "{\n  \"itemURL\":[\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\"\n    ]\n}",
-            "dataMode": "raw",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414609000822
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "ceeea5f8-e4aa-f8b0-4a71-d1286ce91d9a",
-            "name": "playPrev",
-            "description": "",
-            "url": "{{server}}/play_prev",
-            "method": "POST",
-            "headers": "",
-            "data": [],
-            "dataMode": "params",
-            "timestamp": 0,
-            "version": 2,
-            "time": 1414349801932
-        }, {
-            "collectionId": "5beeefd2-3633-f131-09ad-e8cd135ff0e8",
-            "id": "ff7f1112-bd0f-d071-8687-a44586a78414",
-            "name": "playMany",
-            "description": "Start playing the specified media list. The current play queue will be lost.",
-            "url": "{{server}}/play",
-            "method": "POST",
-            "headers": "",
-            "data": "{\n  \"itemURL\":[\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\",\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\",\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\"\n    ]\n}",
-            "dataMode": "raw",
-            "timestamp": 0,
-            "responses": [],
-            "version": 2
-        }]
-    }],
-    "environments": [{
-        "id": "92adb03a-04df-e2a2-cebd-ffcd01513e04",
-        "name": "",
-        "values": [{
-            "key": "dev",
-            "value": "localhost:3000",
-            "type": "text"
-        }, {
-            "key": "prod",
-            "value": "192.168.1.144:3000",
-            "type": "text"
-        }],
-        "timestamp": 1414349578378
-    }, {
-        "id": "524f4afb-1d0e-f936-6f8f-33ab1fe6ee8e",
-        "name": "dev",
-        "values": [{
-            "key": "server",
-            "value": "localhost:3000",
-            "type": "text"
-        }],
-        "timestamp": 1414349672684
-    }, {
-        "id": "ceb2f1f5-da76-c42c-c595-67271ddeffe1",
-        "name": "rpi-prod",
-        "values": [{
-            "key": "server",
-            "value": "192.168.1.144:3000",
-            "type": "text"
-        }],
-        "timestamp": 1414349696416
-    }],
-    "headerPresets": [],
-    "globals": []
+{  
+   "version":1,
+   "collections":[  
+      {  
+         "id":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+         "name":"rpid",
+         "timestamp":1414340432404,
+         "order":[  
+            "3bcf2ad5-5e62-fd13-4383-30337b2640d6",
+            "c6e7b51b-53b0-b82f-ea24-e6fe3986362e",
+            "ff7f1112-bd0f-d071-8687-a44586a78414",
+            "bbbb068f-5987-5efb-b311-aaec6959c961",
+            "8f762219-0279-885b-e82b-0b4f72abe2f2",
+            "3baa00b1-6ab4-5a65-6105-3f19f286205d",
+            "51dc1162-daf5-eead-a799-328536207036",
+            "5e73c423-2098-b848-d45e-bcff90d52867",
+            "08695a0d-bc45-9240-5ebe-c0c5c80f2c6e",
+            "52203646-116c-9d0e-6929-6353c4c54d56",
+            "8d8ddcb6-426d-a3d7-c7fc-d82ac5acd671",
+            "ceeea5f8-e4aa-f8b0-4a71-d1286ce91d9a",
+            "b9bcb263-404c-a289-a6d6-be67e48b5ac1",
+            "0bb880f9-f09d-da72-a648-3630068da589",
+            "41a05cc9-f975-1233-4fe1-b05432191ba3"
+         ],
+         "requests":[  
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"08695a0d-bc45-9240-5ebe-c0c5c80f2c6e",
+               "name":"resume",
+               "description":"",
+               "url":"{{server}}/resume",
+               "method":"POST",
+               "headers":"jso: \nContent-Type: application/json\n",
+               "data":[  
+
+               ],
+               "dataMode":"params",
+               "timestamp":0,
+               "version":2,
+               "time":1414625103049
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"0bb880f9-f09d-da72-a648-3630068da589",
+               "name":"volUp",
+               "description":"",
+               "url":"{{server}}/volume/up",
+               "method":"POST",
+               "headers":"Content-Type: application/json\n",
+               "data":[  
+
+               ],
+               "dataMode":"params",
+               "timestamp":0,
+               "version":2,
+               "time":1414630388860
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"3baa00b1-6ab4-5a65-6105-3f19f286205d",
+               "name":"addManyToPlaylist",
+               "description":"",
+               "url":"{{server}}/playlist/add",
+               "method":"POST",
+               "headers":"Content-Type: application/json\n",
+               "data":"{\n  \"itemURL\":[\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\",\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\",\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\"\n    ]\n}",
+               "dataMode":"raw",
+               "timestamp":0,
+               "version":2,
+               "time":1414630491120
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"3bcf2ad5-5e62-fd13-4383-30337b2640d6",
+               "name":"state",
+               "description":"",
+               "url":"{{server}}/state",
+               "method":"GET",
+               "headers":"",
+               "data":"{\n  \"itemURL\":[\n    \"%2Fmedia%2Fdat%2Fvid%2FEnders%5C%20Game%2F%5C%5B%5C%20www.UsaBit.com%5C%20%5C%5D%5C%20-%5C%20Ender%E2%80%99s%5C%20Game%5C%20%5C(2013%5C)%5C%20720p%5C%20HDRip%5C%20750MB%5C%20Ganool.mkv\",\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\",\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\"\n    ]\n}",
+               "dataMode":"raw",
+               "timestamp":0,
+               "version":2,
+               "time":1414352771436
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"41a05cc9-f975-1233-4fe1-b05432191ba3",
+               "name":"index",
+               "description":"",
+               "url":"{{server}}/",
+               "method":"GET",
+               "headers":"",
+               "data":[  
+
+               ],
+               "dataMode":"params",
+               "timestamp":0,
+               "version":2,
+               "time":1414548033393
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"51dc1162-daf5-eead-a799-328536207036",
+               "name":"clearPlaylist",
+               "description":"",
+               "url":"{{server}}/playlist/clear",
+               "method":"POST",
+               "headers":"Content-Type: application/json\n",
+               "data":[  
+
+               ],
+               "dataMode":"params",
+               "timestamp":0,
+               "version":2,
+               "time":1414630470875
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"52203646-116c-9d0e-6929-6353c4c54d56",
+               "name":"stop",
+               "description":"",
+               "url":"{{server}}/stop",
+               "method":"POST",
+               "headers":"Content-Type: application/json\n",
+               "data":[  
+
+               ],
+               "dataMode":"params",
+               "timestamp":0,
+               "version":2,
+               "time":1414625112167
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"5e73c423-2098-b848-d45e-bcff90d52867",
+               "name":"pause",
+               "description":"",
+               "url":"{{server}}/pause",
+               "method":"POST",
+               "headers":"Content-Type: application/json\n",
+               "data":[  
+
+               ],
+               "dataMode":"params",
+               "timestamp":0,
+               "version":2,
+               "time":1414628876359
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"8d8ddcb6-426d-a3d7-c7fc-d82ac5acd671",
+               "name":"playNext",
+               "description":"",
+               "url":"{{server}}/play/next",
+               "method":"POST",
+               "headers":"Content-Type: application/json\n",
+               "data":[  
+
+               ],
+               "dataMode":"params",
+               "timestamp":0,
+               "version":2,
+               "time":1414630365046
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"8f762219-0279-885b-e82b-0b4f72abe2f2",
+               "name":"addOneToPlaylist",
+               "description":"",
+               "url":"{{server}}/playlist/add",
+               "method":"POST",
+               "headers":"Content-Type: application/json\n",
+               "data":"{\n  \"itemURL\":\"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\"\n}",
+               "dataMode":"raw",
+               "timestamp":0,
+               "version":2,
+               "time":1414630498550
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"b9bcb263-404c-a289-a6d6-be67e48b5ac1",
+               "name":"volDown",
+               "description":"",
+               "url":"{{server}}/volume/down",
+               "method":"POST",
+               "headers":"Content-Type: application/json\n",
+               "data":[  
+
+               ],
+               "dataMode":"params",
+               "timestamp":0,
+               "version":2,
+               "time":1414630380917
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"bbbb068f-5987-5efb-b311-aaec6959c961",
+               "name":"play",
+               "description":"",
+               "url":"{{server}}/play",
+               "method":"POST",
+               "headers":"Content-Type: application/json\n",
+               "data":"",
+               "dataMode":"raw",
+               "timestamp":0,
+               "version":2,
+               "time":1414625069051
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"c6e7b51b-53b0-b82f-ea24-e6fe3986362e",
+               "name":"playOne",
+               "description":"Start playing the specified media. The current play queue will be lost.",
+               "url":"{{server}}/play",
+               "method":"POST",
+               "headers":"Content-Type: application/json\n",
+               "data":"{\n  \"itemURL\":[\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\"\n    ]\n}",
+               "dataMode":"raw",
+               "timestamp":0,
+               "version":2,
+               "time":1414625056795
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"ceeea5f8-e4aa-f8b0-4a71-d1286ce91d9a",
+               "name":"playPrev",
+               "description":"",
+               "url":"{{server}}/play/prev",
+               "method":"POST",
+               "headers":"Content-Type: application/json\n",
+               "data":[  
+
+               ],
+               "dataMode":"params",
+               "timestamp":0,
+               "version":2,
+               "time":1414632089966
+            },
+            {  
+               "collectionId":"5beeefd2-3633-f131-09ad-e8cd135ff0e8",
+               "id":"ff7f1112-bd0f-d071-8687-a44586a78414",
+               "name":"playMany",
+               "description":"Start playing the specified media list. The current play queue will be lost.",
+               "url":"{{server}}/play",
+               "method":"POST",
+               "headers":"Content-Type: application/json\n",
+               "data":"{\n  \"itemURL\":[\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\",\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\",\n    \"./tests/data/MediaCoder_test2_1m10s_XVID_VBR_131kbps_480x320_25fps_AACLCv4_VBR_32kbps_Stereo_24000Hz.mp4\"\n    ]\n}",
+               "dataMode":"raw",
+               "timestamp":0,
+               "version":2,
+               "time":1414625045676
+            }
+         ]
+      }
+   ],
+   "environments":[  
+      {  
+         "id":"92adb03a-04df-e2a2-cebd-ffcd01513e04",
+         "name":"",
+         "values":[  
+            {  
+               "key":"dev",
+               "value":"localhost:3000",
+               "type":"text"
+            },
+            {  
+               "key":"prod",
+               "value":"192.168.1.144:3000",
+               "type":"text"
+            }
+         ],
+         "timestamp":1414349578378
+      },
+      {  
+         "id":"524f4afb-1d0e-f936-6f8f-33ab1fe6ee8e",
+         "name":"dev",
+         "values":[  
+            {  
+               "key":"server",
+               "value":"localhost:3000",
+               "type":"text"
+            }
+         ],
+         "timestamp":1414349672684
+      },
+      {  
+         "id":"ceb2f1f5-da76-c42c-c595-67271ddeffe1",
+         "name":"rpi-prod",
+         "values":[  
+            {  
+               "key":"server",
+               "value":"192.168.1.144:3000",
+               "type":"text"
+            }
+         ],
+         "timestamp":1414349696416
+      }
+   ],
+   "headerPresets":[  
+      {  
+         "id":"cf5957b0-4380-2bf3-1ee5-440678e3d5fa",
+         "name":"",
+         "headers":[  
+            {  
+               "key":"Content-Type",
+               "value":"application/json",
+               "type":"text"
+            }
+         ],
+         "timestamp":1414624971201
+      },
+      {  
+         "id":"8b6e9257-bad7-9544-9edc-5efa7f059e60",
+         "name":"json",
+         "headers":[  
+            {  
+               "key":"Content-Type",
+               "value":"application/json",
+               "type":"text"
+            }
+         ],
+         "timestamp":1414624992391
+      }
+   ],
+   "globals":[  
+
+   ]
 }
