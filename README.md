@@ -2,23 +2,30 @@
 The RPID project goal is to create a *Chromecast*-like system to remotely play multimedia files shared on a local network.
 
 ##Dependencies
-RPID is built with Node.js. To start developing, you will need to install:
+RPID is built with Node.js. To start developing, install the following dependencies:
 
-1. Node.js `apt-get install nodejs`
-2. grunt `apt-get install grunt`
-3. nodemon `npm install -g nodemon`
+```
+apt-get install nodejs
+apt-get install grunt
+npm install -g nodemon
+```
 
 ##Installation
-All Node.js dependencies are under source control in the folder *node_modules*. If you want to install
-dependencies directly from an npm server, run this command:
-
-`npm install`
+To start developping, clone the github repository , install dependencies via the *npm* tool and
+start a development server using *grunt*.
+```
+git clone git@github.com:Aleksandre/rpid.git
+cd rpid/
+npm install
+grunt run
+```
 
 ##Usage
-1. Start RPID server on [http://localhost:3000/](http://localhost:3000/)
-`grunt run`
+Action        | Command
+------------- | -------------
+grunt run | Start a development server on [http://localhost:3000/](http://localhost:3000/)
+grunt test --force | Run unit tests and analyze the code with jslint
 
-2. Run jslint and unit tests `grunt test --force`
 
 ##Architecture
 ![System architecture](./doc/architecture.png)
