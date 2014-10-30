@@ -44,5 +44,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', ['env', 'jshint', 'mochaTest', 'watch']);
 
+   grunt.registerTask('test-travis', ['env', 'mochaTest']);
+
   grunt.registerTask('run', ['env', 'nodemon']);
 }
