@@ -56,10 +56,12 @@ AppController.prototype = {
     if ('itemURL' in req.body) {
       var items = req.body['itemURL'];
       if (items instanceof Array || typeof items === "string") {
-        console.log('AppController is playing <%d> media files', items.length);
+        winston.info('AppController is playing <%d> media files', items.length);
         this._sendPlayCmd(items, res);
       } else {
-        res.status(400).send('The item parameter argument must be a string or an Array of media URL');
+        this._respondWithError(res, {
+          message: 'The item parameter argument must be a string or an Array of media URL'
+        });
       }
     } else  {
       this._sendPlayCmd(null, res);
@@ -69,13 +71,7 @@ AppController.prototype = {
   _sendPlayCmd: function (item, res) {
     var result = this.player.play(item);
     if (result instanceof Error) {
-      var response = {
-        'result': 'The server failed to handle the request',
-        error_message: result.message,
-        server_state: this.player.getState(),
-        stack: result.stack
-      };
-      res.status(400).send(response);
+      this._respondWithError(res, result);
     } else {
       res.status(200).send(this.player.getState());
     }
@@ -95,8 +91,15 @@ AppController.prototype = {
         res.status(400).send('The item parameter argument must be a string or an Array of media URL');
       }
     } else  {
-      res.status(400).send('The itemURL parameter was not specified');
+      this._respondWithError(res, {
+        message: 'The itemURL parameter was not specified'
+      });
     }
+  },
+
+  getPlaylist: function (req, res) {
+    var playlist = this.player.playlist;
+    res.status(200).send(playlist);
   },
 
   clearPlaylist: function (req, res)  {
@@ -149,7 +152,7 @@ AppController.prototype = {
     var stack = error.stack || '';
     var response = {
       'result': 'The server failed to handle the request',
-      error_message: message ,
+      error_message: message,
       server_state: this.player.getState(),
       stack: stack
     };

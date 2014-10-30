@@ -64,6 +64,7 @@ HttpService.prototype = {
     this.app.post('/pause', this.controller.pause.bind(this.controller));
     this.app.post('/resume', this.controller.resume.bind(this.controller));
 
+    this.app.get('/playlist', this.controller.getPlaylist.bind(this.controller));
     this.app.post('/playlist/add', this.controller.addToPlaylist.bind(this.controller));
     this.app.post('/playlist/clear', this.controller.clearPlaylist.bind(this.controller));
 
