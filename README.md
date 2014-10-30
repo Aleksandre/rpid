@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Aleksandre/rpid.svg?branch=master)](https://travis-ci.org/Aleksandre/rpid)
 ##Introduction
 The RPID project goal is to transform a Raspberry Pi system into a *Chromecast*-like system to remotely play multimedia files shared on a local network.
 
