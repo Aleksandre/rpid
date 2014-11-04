@@ -1,4 +1,20 @@
-#:kivy 1.0
+#:kivy 1.4
 
-Button:
-    text: 'Hello world'
+<Catalog>:
+    screen_manager: screen_manager
+    orientation: 'vertical'
+    BoxLayout:
+        id: reactive_layout
+        orientation: 'vertical' if self.width < self.height else 'horizontal'
+
+
+        ScreenManager:
+            id: screen_manager
+            Screen:
+                name: "Visible"
+                RPIDContainer:
+            Screen:
+                name: "Hidden"
+                RPIDHiddenContainer:
+           
+           

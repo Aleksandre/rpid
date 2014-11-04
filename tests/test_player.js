@@ -6,42 +6,67 @@ var testPlayer = function (player, playerName) {
 
 		describe(".play()", function () {
 
+
 			it("should start playing the specified media", function () {
-				player.play(config.validMediaURL);
-				var result = player.getState();
-				var playerState = result.player_state;
-				should(playerState).equal(player.allStates.Playing);
+				function cb() {
+					var result = player.getState();
+					var playerState = result.player_state;
+					should(playerState).equal(player.allStates.Playing);
+				};
+				player.play(config.validMediaURL, cb);
 			});
 
 			it("return an error when no file was specified", function () {
 				player.clearPlaylist();
-				player.stop();
-				should(player.getState().player_state).equal(player.allStates.Stopped);
-				should(player.play()).be.an.Error;
+
+				function stopCB() {
+					should(player.getState().player_state).equal(player.allStates.Stopped);
+					player.play(null, playCB);
+				};
+
+				function playCB(result) {
+					should(player.getState().player_state).equal(player.allStates.Stopped);
+					should(result).be.an.Error;
+				};
+
+				player.stop(stopCB);
 			});
 
 			it("should return an error when file is not found found", function () {
 				player.clearPlaylist();
-				player.stop();
-				should(player.getState().player_state).equal(player.allStates.Stopped);
-				should(player.play(config.invalidMediaURL)).be.an.Error;
+
+				function stopCB() {
+					should(player.getState().player_state).equal(player.allStates.Stopped);
+
+				};
+
+				function playCB(result) {
+					should(player.getState().player_state).equal(player.allStates.Stopped);
+					should(result).be.an.Error;
+
+				};
+
+				player.stop(stopCB);
 			});
 
 			it("should stop playing the current media if one is playing", function () {
+				function playCB() {
+					var result = player.getState();
+					var playerState = result.player_state;
+					should(playerState).equal(player.allStates.Playing);
+
+					player.stop(stopCB);
+				};
+
+				function stopCB() {
+					var result = player.getState();
+					var playerState = result.player_state;
+					should(playerState).equal(player.allStates.Stopped);
+				};
+
 				player.clearPlaylist();
 				player.stop();
-				should(player.getState().player_state).equal(player.allStates.Stopped);
-
-				player.play(config.validMediaURL);
-				var initialState = player.getState();
-				should(player.getState().player_state).equal(player.allStates.Playing);
-				should(initialState.queue_current_item).not.equal('');
-
-				player.play(config.validMediaURL2);
-				var secondState = player.getState();
-				should(secondState.queue_current_item).not.equal('');
-
-				should(initialState.queue_current_item).not.equal(secondState.queue_current_item);
+				player.play(playCB);
 			});
 
 			it("should throw a onStartedPlayingEvent", function () {
@@ -124,31 +149,20 @@ var testPlayer = function (player, playerName) {
 			});
 		});
 
-		describe(".stop()", function () {
-			it("should stop playing the currently playing media", function () {
-				player.play(config.validMediaURL);
-				should(player.getState().player_state).be.exactly(player.allStates.Playing);
-
-				player.stop();
-				should(player.getState().player_state).be.exactly(player.allStates.Stopped);
-			});
-
-			it("should change state after it stopped playing", function () {
-
-			});
-
-			it("should throw a onStoppedPlayingEvent", function () {
-				//Test Goes Here
-			});
-		});
-
 		describe(".pause()", function () {
 			it("should pause playing the currently playing media", function () {
-				player.play(config.validMediaURL);
-				should(player.getState().player_state).be.exactly(player.allStates.Playing);
+				player.clearPlaylist();
+				player.stop();
 
-				player.pause();
-				should(player.getState().player_state).be.exactly(player.allStates.Paused);
+				function playCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Playing);
+					player.pause(pauseCB);
+				};
+
+				function pauseCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Paused);
+				};
+				player.play(config.validMediaURL, playCB);
 			});
 
 
@@ -159,14 +173,24 @@ var testPlayer = function (player, playerName) {
 
 		describe(".resume()", function () {
 			it("should resume playing the currently paused media", function () {
-				player.play(config.validMediaURL);
-				should(player.getState().player_state).be.exactly(player.allStates.Playing);
+				player.clearPlaylist();
+				player.stop();
 
-				player.pause();
-				should(player.getState().player_state).be.exactly(player.allStates.Paused);
+				function playCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Playing);
+					player.pause(pauseCB);
+				};
 
-				player.resume();
-				should(player.getState().player_state).be.exactly(player.allStates.Playing);
+				function pauseCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Paused);
+					player.resume(resumeCB);
+				};
+
+				function resumeCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Playing);
+				};
+
+				player.play(config.validMediaURL, playCB);
 			});
 
 			it("should change state after it resumed playing", function () {
@@ -183,65 +207,99 @@ var testPlayer = function (player, playerName) {
 				player.clearPlaylist();
 
 				var url = config.validMediaURL;
-				player.addItemsToPlaylist([url, url, url]);
+				player.addItemsToPlaylist([url, url]);
 
-				player.play();
-				should(player.getState().queue_item_position).be.exactly(1);
+				function stopCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Stopped);
+					player.play(playCB);
+				};
 
-				player.playNext();
-				should(player.getState().queue_item_position).be.exactly(2);
+				function playCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Playing);
+					should(player.getState().queue_item_position).be.exactly(1);
+					player.playNext(secondPlayCB);
+				};
 
-				player.playNext();
-				should(player.getState().queue_item_position).be.exactly(3);
+				function secondPlayCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Playing);
+					should(player.getState().queue_item_position).be.exactly(2);
+				};
+
+				player.stop(stopCB);
 			});
 
 			it("should continue playing if there are no media in the queue and playNext is called", function () {
-				var url = config.validMediaURL;
-				var original_queue = [url];
+
 				player.clearPlaylist();
-				player.stop();
-				player.addItemsToPlaylist(original_queue);
 
-				player.play();
-				should(player.currentMedia).be.exactly(url);
+				var url = config.validMediaURL;
+				player.addItemsToPlaylist([url]);
 
-				player.playNext();
-				should(player.currentMedia).be.exactly(url);
+				function stopCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Stopped);
+					player.play(playCB);
+				};
 
-				should(player.getState().player_state).be.exactly(player.allStates.Playing);
+				function playCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Playing);
+					should(player.getState().queue_item_position).be.exactly(1);
+					player.playNext(secondPlayCB);
+				};
+
+				function secondPlayCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Playing);
+					should(player.getState().queue_item_position).be.exactly(1);
+				};
+
+				player.stop(stopCB);
 			});
 		});
 
 		describe(".playPrevious()", function () {
 			it("should play the previous media if one is in the queue and playPrevious is called", function () {
 				player.clearPlaylist();
-				player.stop();
 
 				var url = config.validMediaURL;
 				player.addItemsToPlaylist([url, url]);
 
-				player.play();
-				should(player.getState().queue_item_position).be.exactly(1);
+				function stopCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Stopped);
+					player.play(null, playCB);
+				};
 
-				player.playNext();
-				should(player.getState().queue_item_position).be.exactly(2);
+				function playCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Playing);
+					should(player.getState().queue_item_position).be.exactly(1);
+					player.playNext(secondPlayCB);
+				};
 
-				player.playPrevious();
-				should(player.getState().queue_item_position).be.exactly(1);
+				function secondPlayCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Playing);
+					should(player.getState().queue_item_position).be.exactly(2);
+					player.playPrevious(playPreviousCB);
+				};
 
-				player.playPrevious();
-				should(player.getState().queue_item_position).be.exactly(1);
+				function playPreviousCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Playing);
+					should(player.getState().queue_item_position).be.exactly(1);
+					player.playPrevious(secondPreviousCB);
+				};
 
-				should(player.getState().player_state).be.exactly(player.allStates.Playing);
+				function secondPreviousCB() {
+					should(player.getState().player_state).be.exactly(player.allStates.Playing);
+					should(player.getState().queue_item_position).be.exactly(1);
+				};
+
+				player.stop(stopCB);
 			});
 		});
 	});
 };
 
-var BasePlayer = require('../core/player.js').BasePlayer;
+var BasePlayer = require('../lib/player.js').BasePlayer;
 var BasePlayer = new BasePlayer();
-testPlayer(BasePlayer, 'ConsolePlayer');
+testPlayer(BasePlayer);
 
-//var PlayerOmxDirector = require('../core/player_omx.js');
+//var PlayerOmxDirector = require('../core/player_omx_dir.js');
 //var playerOmxDirector = new PlayerOmxDirector();
-//testPlayer(playerOmxDirector,'OmxDirectorPlayer');
+//testPlayer(playerOmxDirector);

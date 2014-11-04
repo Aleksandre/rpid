@@ -24,6 +24,7 @@ grunt run
 Action        | Command
 ------------- | -------------
 grunt run | Start a development server on [http://localhost:3000/](http://localhost:3000/)
+grunt run-ui | Start an instance of the Python UI 
 grunt test --force | Run unit tests and analyze the code with jslint
 
 

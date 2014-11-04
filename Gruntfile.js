@@ -1,14 +1,9 @@
-var jsToWatch = [
-  'app.js',
-  'core/*.js'
-];
-
 module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     nodemon: {
       dev: {
-        script: 'app.js'
+        script: './app.js'
       }
     },
     env: {
@@ -22,7 +17,7 @@ module.exports = function (grunt) {
       dest: './.test_result.out'
     },
     watch: {
-      files: ['./*.js', 'tests/*.js', 'core/*.js'],
+      files: ['./*.js', 'tests/*.js', 'lib/*.js'],
       tasks: ['jshint', 'mochaTest']
     },
     jshint: {
@@ -37,14 +32,19 @@ module.exports = function (grunt) {
         },
       },
       all: ['Gruntfile.js', './core/*.js', './tests/*.js']
+    },
+    exec :{
+      run_ui: 'nodemon --exec "python" ./ui/main.py'
     }
   });
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+  grunt.loadNpmTasks('grunt-exec');
 
   grunt.registerTask('test', ['env', 'jshint', 'mochaTest', 'watch']);
-
-   grunt.registerTask('test-travis', ['env', 'mochaTest']);
-
+  grunt.registerTask('test-travis', ['env', 'mochaTest']);
+  grunt.registerTask('test-rpi', ['env','mochaTest'])
   grunt.registerTask('run', ['env', 'nodemon']);
+  grunt.registerTask('run-ui', ['env','exec:run_ui'])
+
 }
